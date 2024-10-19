@@ -1,0 +1,18 @@
+services:
+  postgres:
+    container_name: "demo-postgres"
+    image: postgis/postgis:16-master
+    volumes:
+      - ./postgres/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=abc123
+      - POSTGRES_DB=postgres
+      - POSTGRES_RESTORE_STRATEGY=always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
